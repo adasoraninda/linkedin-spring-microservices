@@ -1,8 +1,8 @@
 package com.adasoraninda.explorcali.repo;
 
 import com.adasoraninda.explorcali.domain.TourPackage;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -11,8 +11,13 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = "packages", path = "packages")
 public interface TourPackageRepository extends CrudRepository<TourPackage, String> {
 
-    @Query("SELECT tp FROM TourPackage tp WHERE tp.name = ?1")
-    Optional<TourPackage> findByName(String name);
+    /**
+     * Find Tour Package by name.
+     *
+     * @param name name of the package
+     * @return Optional of TourPackage
+     */
+    Optional<TourPackage> findByName(@Param("name")String name);
 
     @Override
     @RestResource(exported = false)
@@ -32,13 +37,10 @@ public interface TourPackageRepository extends CrudRepository<TourPackage, Strin
 
     @Override
     @RestResource(exported = false)
-    void deleteAllById(Iterable<? extends String> iterable);
-
-    @Override
-    @RestResource(exported = false)
     void deleteAll(Iterable<? extends TourPackage> iterable);
 
     @Override
     @RestResource(exported = false)
     void deleteAll();
 }
+
